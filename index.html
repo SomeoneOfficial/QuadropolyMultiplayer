@@ -212,193 +212,343 @@ body {
    Board centered, player strip at bottom
 ══════════════════════════════════════════ */
 #game-screen {
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
+  flex-direction: row !important;
+  align-items: stretch !important;
+  justify-content: stretch !important;
   padding: 0 !important;
   overflow: hidden;
+  background: #1a2e1a;
 }
 .game-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+  display: flex; flex-direction: row;
+  width: 100vw; height: 100vh; overflow: hidden;
 }
 
-/* Top bar — turn info, dice, actions */
-.game-topbar {
-  width: 100%;
-  background: rgba(0,0,0,0.55);
-  backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.2rem;
-  padding: 0.5rem 1.5rem;
+/* SIDE PANELS */
+.game-side {
+  width: 195px; flex-shrink: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(14px);
+  display: flex; flex-direction: column;
+  overflow-y: auto; overflow-x: hidden;
+  border-right: 1px solid rgba(255,255,255,0.07);
+}
+.game-side.right { border-right: none; border-left: 1px solid rgba(255,255,255,0.07); }
+.game-side::-webkit-scrollbar { width: 3px; }
+.game-side::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 2px; }
+.side-section {
+  padding: 0.75rem 0.85rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
   flex-shrink: 0;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  flex-wrap: wrap;
 }
-.topbar-turn {
-  display: flex; align-items: center; gap: 0.5rem;
-}
-.topbar-turn-label {
-  font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.12em; color: rgba(255,255,255,0.45);
-}
-.topbar-turn-name {
-  font-family: 'Bebas Neue', sans-serif; font-size: 1.15rem;
-  letter-spacing: 0.06em; color: #fff; line-height: 1;
-}
-.topbar-dice {
-  display: flex; align-items: center; gap: 0.4rem;
-}
-.die {
-  width: 38px; height: 38px; border: 2px solid rgba(255,255,255,0.3);
-  border-radius: 8px; background: white; color: var(--ink);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.4rem; box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-}
-.die.rolling { animation: droll 0.35s ease-out; }
-@keyframes droll { 0%{transform:rotate(0) scale(1)} 40%{transform:rotate(160deg) scale(1.25)} 100%{transform:rotate(360deg) scale(1)} }
-.doubles-badge {
-  font-size: 0.62rem; font-weight: 700; letter-spacing: 0.05em;
-  color: var(--gold); text-transform: uppercase; white-space: nowrap;
-}
-.topbar-actions {
-  display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap;
-}
-.topbar-actions .btn {
-  padding: 0.4rem 0.9rem; font-size: 0.7rem; letter-spacing: 0.06em;
-  white-space: nowrap;
-}
-.topbar-extras {
-  display: flex; align-items: center; gap: 0.4rem; margin-left: auto;
-}
-.pot-badge {
-  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 20px; padding: 0.25rem 0.7rem;
-  font-family: 'Courier Prime', monospace; font-size: 0.72rem; color: rgba(255,255,255,0.7);
-  white-space: nowrap;
-}
-.pot-badge strong { color: var(--gold); }
-
-/* Board area — takes up the space between topbar and player strip */
-.game-board-area {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 0;
-  padding: 0.5rem;
+.side-section.grow { flex: 1; display: flex; flex-direction: column; border-bottom: none; }
+.side-label {
+  font-size: 0.55rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.16em; color: rgba(255,255,255,0.28);
+  margin-bottom: 0.55rem; display: block;
 }
 
-/* ══════════════════════════════════════════
-   THE BOARD
-══════════════════════════════════════════ */
-.board-outer {
-  aspect-ratio: 1/1;
-  height: 100%;
-  max-height: calc(100vh - 46px - 110px);
-  max-width: calc(100vw - 1rem);
-  position: relative;
-  border: 3px solid var(--ink);
-  background: var(--paper);
-  box-shadow: 0 0 0 1px var(--border) inset, 0 8px 40px rgba(0,0,0,0.5);
-}
-
-/* ══════════════════════════════════════════
-   PLAYER STRIP — richup.io style
-══════════════════════════════════════════ */
-.player-strip {
-  width: 100%;
-  background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(255,255,255,0.1);
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-  flex-shrink: 0;
-  min-height: 90px;
-  max-height: 110px;
-  overflow: hidden;
-  gap: 0;
-}
+/* PLAYER CARDS */
 .pcard {
-  flex: 1;
-  max-width: 220px;
-  min-width: 120px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0.6rem 0.5rem;
-  position: relative;
-  border-right: 1px solid rgba(255,255,255,0.06);
-  transition: background 0.2s;
-  gap: 0.3rem;
+  display: flex; align-items: center; gap: 0.55rem;
+  padding: 0.5rem 0.6rem; border-radius: 8px;
+  margin-bottom: 0.35rem; position: relative;
+  border: 1px solid transparent; transition: background 0.15s;
 }
-.pcard:last-child { border-right: none; }
+.pcard:last-child { margin-bottom: 0; }
 .pcard.active {
-  background: rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.16);
 }
 .pcard.active::before {
   content: '';
-  position: absolute; top: 0; left: 0; right: 0;
-  height: 3px;
-  border-radius: 0 0 2px 2px;
+  position: absolute; left: 0; top: 10%; bottom: 10%;
+  width: 3px; border-radius: 3px;
   background: var(--player-color, var(--gold));
 }
-.pcard.bust { opacity: 0.28; pointer-events: none; }
-
-/* Avatar circle */
+.pcard.bust { opacity: 0.2; pointer-events: none; }
 .pcard-avatar {
-  width: 38px; height: 38px; border-radius: 50%;
-  background: var(--player-color, #888);
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--player-color, #555);
   display: flex; align-items: center; justify-content: center;
-  font-size: 1.3rem; line-height: 1;
-  border: 2px solid rgba(255,255,255,0.25);
-  flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-  position: relative;
+  font-size: 1.05rem; line-height: 1; flex-shrink: 0;
+  border: 2px solid rgba(255,255,255,0.2); position: relative;
 }
 .pcard-avatar.active-ring {
   border-color: var(--player-color, var(--gold));
-  box-shadow: 0 0 0 2px var(--player-color, var(--gold)), 0 2px 8px rgba(0,0,0,0.4);
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.15);
 }
-/* Jail indicator on avatar */
 .pcard-jail-icon {
-  position: absolute; bottom: -3px; right: -3px;
-  font-size: 0.65rem; line-height: 1;
-  background: var(--red-dark); border-radius: 50%;
-  width: 14px; height: 14px; display: flex; align-items: center; justify-content: center;
+  position: absolute; bottom: -2px; right: -2px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: #8b0000; font-size: 0.48rem;
+  display: flex; align-items: center; justify-content: center;
 }
-
+.pcard-info { flex: 1; min-width: 0; }
 .pcard-name {
-  font-family: 'Lato', sans-serif; font-weight: 900;
-  font-size: 0.72rem; color: #fff; letter-spacing: 0.02em;
+  font-family: 'Lato', sans-serif; font-weight: 800;
+  font-size: 0.74rem; color: #fff;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  max-width: 100%; text-align: center;
 }
 .pcard-money {
   font-family: 'Courier Prime', monospace; font-weight: 700;
-  font-size: 0.82rem; color: #4ade80; text-align: center; line-height: 1;
+  font-size: 0.78rem; color: #4ade80; line-height: 1.3;
 }
 .pcard-money.low { color: #f87171; }
+.pcard-props { display: flex; gap: 2px; flex-wrap: wrap; margin-top: 2px; }
+.pdot { width: 7px; height: 7px; border-radius: 2px; border: 1px solid rgba(0,0,0,0.25); }
 
-/* Property dots row */
-.pcard-props {
-  display: flex; gap: 2px; flex-wrap: wrap;
-  justify-content: center; max-width: 100%;
+/* DICE */
+.die {
+  width: 44px; height: 44px;
+  border: 2px solid rgba(255,255,255,0.2); border-radius: 10px;
+  background: #fff; color: #111;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.65rem; flex-shrink: 0;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.8);
 }
-.pdot {
-  width: 7px; height: 7px; border-radius: 1px;
-  border: 1px solid rgba(0,0,0,0.3);
+.die.rolling { animation: droll 0.35s ease-out; }
+@keyframes droll { 0%{transform:rotate(0) scale(1)} 40%{transform:rotate(160deg) scale(1.3)} 100%{transform:rotate(360deg) scale(1)} }
+.dice-row { display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 0.4rem; }
+.doubles-badge {
+  text-align: center; font-size: 0.62rem; font-weight: 700;
+  color: var(--gold); text-transform: uppercase; letter-spacing: 0.06em;
+  min-height: 0.9rem; margin-bottom: 0.25rem;
+}
+.turn-name-display { text-align: center; margin-bottom: 0.5rem; }
+.turn-label-sm {
+  font-size: 0.52rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.16em; color: rgba(255,255,255,0.3); display: block;
+}
+.turn-name-lg {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.15rem; letter-spacing: 0.06em; line-height: 1.1;
 }
 
-/* Panel class kept for non-game use */
+/* ACTION BUTTONS */
+#actions { display: flex; flex-direction: column; gap: 0.3rem; }
+#actions .abtn {
+  display: block; width: 100%;
+  padding: 0.5rem 0.65rem; border-radius: 6px;
+  font-family: 'Lato', sans-serif; font-weight: 800;
+  font-size: 0.72rem; letter-spacing: 0.03em;
+  cursor: pointer; border: none; text-align: center;
+  transition: filter 0.12s;
+}
+#actions .abtn:hover { filter: brightness(1.12); }
+#actions .abtn.primary { background: #fff; color: #111; }
+#actions .abtn.gold { background: var(--gold); color: #111; }
+#actions .abtn.secondary {
+  background: rgba(255,255,255,0.1); color: #fff;
+  border: 1px solid rgba(255,255,255,0.18);
+}
+.waiting-txt { font-size: 0.65rem; color: rgba(255,255,255,0.3); text-align: center; font-style: italic; }
+
+/* POT */
+.pot-val {
+  font-family: 'Courier Prime', monospace; font-weight: 700;
+  font-size: 1.15rem; color: var(--gold); text-align: center; line-height: 1;
+}
+.pot-lbl {
+  font-size: 0.52rem; color: rgba(255,255,255,0.28);
+  text-transform: uppercase; letter-spacing: 0.14em;
+  text-align: center; display: block; margin-top: 2px;
+}
+
+/* UTIL BUTTONS */
+.util-btn {
+  display: block; width: 100%; text-align: left;
+  padding: 0.42rem 0.6rem; border-radius: 5px; cursor: pointer;
+  background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.6);
+  border: 1px solid rgba(255,255,255,0.1);
+  font-family: 'Lato', sans-serif; font-weight: 700;
+  font-size: 0.63rem; text-transform: uppercase; letter-spacing: 0.06em;
+  margin-bottom: 0.3rem; transition: background 0.12s;
+}
+.util-btn:hover { background: rgba(255,255,255,0.13); color: #fff; }
+
+/* LOG */
+.side-log {
+  flex: 1; overflow-y: auto; padding: 0.5rem 0.7rem;
+  display: flex; flex-direction: column; gap: 1px;
+}
+.side-log::-webkit-scrollbar { width: 3px; }
+.side-log::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+.log-line {
+  font-family: 'Courier Prime', monospace; font-size: 0.63rem;
+  color: rgba(255,255,255,0.38); line-height: 1.45;
+  border-left: 2px solid transparent; padding-left: 4px;
+}
+.log-line.hi { border-color: var(--gold); color: rgba(255,255,255,0.9); font-weight: 700; }
+.log-line.bad { border-color: #ef4444; color: #fca5a5; }
+
+/* BOARD AREA */
+.game-board-area {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  min-width: 0; padding: 0.5rem;
+}
+
+/* BOARD OUTER */
+.board-outer {
+  width: min(calc(100vw - 410px), calc(100vh - 1rem));
+  height: min(calc(100vw - 410px), calc(100vh - 1rem));
+  position: relative;
+  border: 3px solid rgba(20,20,20,0.9);
+  background: var(--paper);
+  box-shadow: 0 0 0 1px var(--border) inset, 0 12px 50px rgba(0,0,0,0.7);
+  flex-shrink: 0;
+}
+
+/* BOARD GRID */
+.board-grid {
+  width: 100%; height: 100%;
+  display: grid;
+  grid-template-columns: 1fr repeat(9, 0.58fr) 1fr;
+  grid-template-rows: 1fr repeat(9, 0.58fr) 1fr;
+  position: relative;
+}
+
+/* SPACE BASE */
+.sp {
+  background: var(--paper);
+  border: 1px solid rgba(26,26,26,0.35);
+  overflow: hidden; position: relative;
+  display: flex; cursor: pointer;
+  transition: background 0.1s; min-width: 0; min-height: 0;
+}
+.sp:hover { background: #ede6d0; z-index: 5; }
+
+/* BOTTOM ROW — band top, text normal */
+.row-b { flex-direction: column; }
+.row-b .band { position: absolute; top: 0; left: 0; right: 0; height: 28%; z-index: 1; }
+.row-b .sp-inner {
+  position: absolute; top: 28%; left: 0; right: 0; bottom: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-end;
+  padding: 2px 2px 3px; gap: 1px;
+}
+
+/* TOP ROW — band bottom, text rotated 180 so top-of-letters faces outward */
+.row-t { flex-direction: column; }
+.row-t .band { position: absolute; bottom: 0; left: 0; right: 0; height: 28%; z-index: 1; }
+.row-t .sp-inner {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 28%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-end;
+  padding: 2px 2px 3px; gap: 1px;
+  transform: rotate(180deg);
+}
+
+/* LEFT COL — band on LEFT (outer wall), text 90deg CW */
+.col-l { flex-direction: row; }
+.col-l .band { position: absolute; left: 0; top: 0; bottom: 0; width: 28%; z-index: 1; }
+.col-l .sp-inner {
+  position: absolute; top: 0; left: 28%; right: 0; bottom: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  transform: rotate(90deg);
+}
+.col-l .sp-name, .col-r .sp-name {
+  white-space: normal; word-break: break-word; max-width: 54px; text-align: center;
+}
+
+/* RIGHT COL — band on RIGHT (outer wall), text 90deg CCW */
+.col-r { flex-direction: row; }
+.col-r .band { position: absolute; right: 0; top: 0; bottom: 0; width: 28%; z-index: 1; }
+.col-r .sp-inner {
+  position: absolute; top: 0; left: 0; right: 28%; bottom: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  transform: rotate(-90deg);
+}
+
+/* BAND */
+.band { background: #888; }
+
+/* SPACE TEXT */
+.sp-name {
+  font-family: 'Lato', sans-serif; font-weight: 900;
+  color: var(--ink); text-align: center; line-height: 1.15;
+  word-break: break-word; hyphens: auto;
+  font-size: clamp(0.44rem, 0.85vw, 0.78rem);
+}
+.sp-price {
+  font-family: 'Courier Prime', monospace; font-weight: 700;
+  color: var(--ink-light); text-align: center;
+  font-size: clamp(0.34rem, 0.64vw, 0.58rem);
+}
+.sp-icon { line-height: 1; text-align: center; font-size: clamp(0.72rem, 1.25vw, 1.1rem); }
+.sp-icon img { width: 16px; height: 16px; object-fit: cover; border-radius: 2px; }
+
+/* CORNERS */
+.corner {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: var(--paper); border: 1px solid rgba(26,26,26,0.35);
+  overflow: hidden; position: relative; cursor: pointer; gap: 3px;
+}
+.corner:hover { background: #ede6d0; }
+.corner-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(0.6rem, 1.1vw, 1rem);
+  letter-spacing: 0.04em; text-align: center; color: var(--ink);
+  line-height: 1.1; padding: 0 3px;
+}
+.corner-icon { font-size: clamp(1.2rem, 2.3vw, 2.1rem); line-height: 1; }
+
+/* CENTER */
+.board-center {
+  grid-column: 2/11; grid-row: 2/11;
+  background: var(--paper);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 4px; overflow: hidden; position: relative;
+}
+.board-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.2rem, 3vw, 3rem);
+  letter-spacing: 0.18em; color: var(--ink); line-height: 1;
+}
+.board-subtitle {
+  font-family: 'Courier Prime', monospace;
+  font-size: clamp(0.34rem, 0.7vw, 0.62rem);
+  color: var(--ink-faint); letter-spacing: 0.22em; text-transform: uppercase;
+}
+.board-divider { width: 55%; height: 1px; background: var(--border); flex-shrink: 0; }
+.board-log {
+  width: 85%; max-height: 38%;
+  overflow-y: auto; padding: 3px 6px;
+  display: flex; flex-direction: column; gap: 1px; flex-shrink: 1;
+}
+.board-log::-webkit-scrollbar { width: 3px; }
+.board-log::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* TOKENS — big coloured circles */
+.tokens-layer { position: absolute; inset: 0; pointer-events: none; z-index: 20; }
+.tok {
+  position: absolute; transform: translate(-50%, -50%);
+  transition: left 0.5s cubic-bezier(.34,1.56,.64,1), top 0.5s cubic-bezier(.34,1.56,.64,1);
+  z-index: 22; pointer-events: none;
+  width: clamp(26px, 3.8vw, 38px); height: clamp(26px, 3.8vw, 38px);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: clamp(0.9rem, 1.6vw, 1.4rem); line-height: 1;
+  border: 2.5px solid #fff;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.9), 0 0 0 1px rgba(0,0,0,0.5);
+}
+
+/* HOUSES */
+.houses-row {
+  display: flex; gap: 1px; flex-wrap: wrap; justify-content: center;
+  position: absolute; bottom: 2px; right: 2px; pointer-events: none; z-index: 3;
+}
+.h-dot { width: 7px; height: 7px; border-radius: 1px; background: #1a7a32; border: 1px solid rgba(0,0,0,0.4); }
+.hotel-dot { background: #bb0000; width: 10px; border-radius: 2px; }
+.owner-dot {
+  position: absolute; top: 2px; left: 2px;
+  width: 8px; height: 8px; border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.7); z-index: 4;
+}
+
+/* PANEL */
 .panel {
   background: var(--paper); border: 2px solid var(--ink);
   border-radius: 3px; padding: 0.8rem;
@@ -913,27 +1063,32 @@ body {
 <div id="game-screen" class="screen">
   <div class="game-wrap">
 
-    <!-- TOP BAR: turn + dice + actions -->
-    <div class="game-topbar">
-      <div class="topbar-turn">
-        <span class="topbar-turn-label">Turn</span>
-        <span class="topbar-turn-name" id="turn-name">—</span>
+    <!-- LEFT PANEL: players + dice + actions -->
+    <div class="game-side left">
+      <div class="side-section">
+        <span class="side-label">Players</span>
+        <div id="player-strip"></div>
       </div>
-      <div class="topbar-dice">
-        <div class="die" id="d1">⚀</div>
-        <div class="die" id="d2">⚀</div>
+      <div class="side-section">
+        <div class="turn-name-display">
+          <span class="turn-label-sm">Current Turn</span>
+          <div class="turn-name-lg" id="turn-name" style="color:#fff;">—</div>
+        </div>
+        <div class="dice-row">
+          <div class="die" id="d1">⚀</div>
+          <div class="die" id="d2">⚀</div>
+        </div>
+        <div class="doubles-badge" id="dbl-badge"></div>
+        <div id="actions"></div>
       </div>
-      <div class="doubles-badge" id="dbl-badge"></div>
-      <div class="topbar-actions" id="actions"></div>
-      <div class="topbar-extras">
-        <div class="pot-badge">🅿 <strong id="pot-display">$0</strong></div>
-        <button class="btn btn-sm btn-secondary" onclick="showManage()" style="font-size:0.65rem;padding:0.3rem 0.7rem;background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:#fff;">🏘 Props</button>
-        <button class="btn btn-sm btn-secondary" onclick="showTrade()" style="font-size:0.65rem;padding:0.3rem 0.7rem;background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.15);color:#fff;">🤝 Trade</button>
-        <button class="btn btn-sm btn-secondary" onclick="showScreen('home-screen')" style="font-size:0.65rem;padding:0.3rem 0.7rem;background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);">✕</button>
+      <div class="side-section">
+        <span class="side-label">Free Parking</span>
+        <div class="pot-val" id="pot-display">$0</div>
+        <span class="pot-lbl">in pot</span>
       </div>
     </div>
 
-    <!-- BOARD -->
+    <!-- BOARD CENTER -->
     <div class="game-board-area">
       <div class="board-outer" id="board-outer">
         <div class="board-grid" id="board-grid"></div>
@@ -941,8 +1096,19 @@ body {
       </div>
     </div>
 
-    <!-- PLAYER STRIP at bottom -->
-    <div class="player-strip" id="player-strip"></div>
+    <!-- RIGHT PANEL: log + tools -->
+    <div class="game-side right">
+      <div class="side-section">
+        <span class="side-label">Tools</span>
+        <button class="util-btn" onclick="showManage()">🏘 Properties</button>
+        <button class="util-btn" onclick="showTrade()">🤝 Trade</button>
+        <button class="util-btn" onclick="showScreen('home-screen')" style="color:rgba(255,255,255,0.35);">✕ Quit</button>
+      </div>
+      <div class="side-section grow">
+        <span class="side-label">Game Log</span>
+        <div class="side-log" id="board-log"></div>
+      </div>
+    </div>
 
   </div>
 </div>
@@ -1393,12 +1559,9 @@ function buildBoard(){
   center.style.gridRow='2/11';
   center.style.gridColumn='2/11';
   center.innerHTML=`
-    <div class="board-logo-area">
-      <div class="board-title">MONOPOLY</div>
-      <div class="board-subtitle">Unleashed Edition</div>
-    </div>
-    <div class="board-divider"></div>
-    <div class="board-log" id="board-log"></div>
+    <div class="board-title">MONOPOLY</div>
+    <div class="board-subtitle" style="font-family:'Courier Prime',monospace;font-size:clamp(0.34rem,0.7vw,0.62rem);color:var(--ink-faint);letter-spacing:0.22em;text-transform:uppercase;">Unleashed Edition</div>
+    <div style="width:55%;height:1px;background:var(--border);flex-shrink:0;margin:3px 0;"></div>
   `;
   grid.appendChild(center);
 
@@ -1457,6 +1620,7 @@ function updateTokens(){
       tok.className='tok';
       tok.id='tok-'+p.id;
       tok.textContent=p.token;
+      tok.style.background=p.color;
       tok.style.left=(cx+offset)+'px';
       tok.style.top=cy+'px';
       layer.appendChild(tok);
@@ -1518,24 +1682,21 @@ function renderPlayers(){
     const card=document.createElement('div');
     card.className=`pcard${isActive?' active':''}${p.bust?' bust':''}`;
     card.style.setProperty('--player-color', p.color);
-
-    // Property color dots
     const propDots=p.props.map(pi=>{
       const sp=G.board[pi];
-      return sp?`<div class="pdot" style="background:${sp.color}"></div>`:'';
+      return sp?`<div class="pdot" style="background:${sp.color||'#888'}"></div>`:'';
     }).join('');
-
     const moneyClass=p.money<200?' low':'';
     const jailIcon=p.inJail?`<div class="pcard-jail-icon">⛓</div>`:'';
-
     card.innerHTML=`
       <div class="pcard-avatar${isActive?' active-ring':''}">
-        ${p.token}
-        ${jailIcon}
+        ${p.token}${jailIcon}
       </div>
-      <div class="pcard-name">${p.name}</div>
-      <div class="pcard-money${moneyClass}">$${p.money.toLocaleString()}</div>
-      <div class="pcard-props">${propDots}</div>
+      <div class="pcard-info">
+        <div class="pcard-name">${p.name}</div>
+        <div class="pcard-money${moneyClass}">$${p.money.toLocaleString()}</div>
+        <div class="pcard-props">${propDots}</div>
+      </div>
     `;
     strip.appendChild(card);
   });
@@ -1547,37 +1708,33 @@ function renderActions(){
   if(!p||p.bust){panel.innerHTML='';return;}
   let html='';
   if(!isMyTurn()){
-    html=`<span style="font-size:0.68rem;color:rgba(255,255,255,0.35);">Waiting for ${p.name}…</span>`;
+    html=`<div class="waiting-txt">Waiting for ${p.name}…</div>`;
     panel.innerHTML=html; return;
   }
   if(G.phase==='roll'){
     if(p.inJail){
-      html+=btn('primary','🎲 Roll','rollDice()');
-      if(p.money>=50)html+=btn('secondary','💰 Pay $50','payJailFine()');
-      if(p.hasJailCard)html+=btn('secondary','🃏 Jail Card','useJailCard()');
+      html+=abtn('primary','🎲 Roll','rollDice()');
+      if(p.money>=50)html+=abtn('secondary','💰 Pay $50','payJailFine()');
+      if(p.hasJailCard)html+=abtn('secondary','🃏 Use Jail Card','useJailCard()');
     } else {
-      html+=btn('primary','🎲 Roll Dice','rollDice()');
+      html+=abtn('primary','🎲 Roll Dice','rollDice()');
     }
   } else if(G.phase==='action'){
     const sp=G.board[p.pos];
     if(sp&&(sp.type==='property'||sp.type==='railroad'||sp.type==='utility')&&sp.owner===undefined&&p.money>=sp.price){
-      html+=btn('gold',`🏠 Buy $${sp.price}`,'buyProp()');
-      html+=btn('secondary','Pass','auctionProp()');
+      html+=abtn('gold',`🏠 Buy — $${sp.price}`,'buyProp()');
+      html+=abtn('secondary','Skip / Auction','auctionProp()');
     }
-    html+=btn('primary','End Turn ⏭','endTurn()');
+    html+=abtn('primary','End Turn ⏭','endTurn()');
   }
   panel.innerHTML=html;
 }
 
-function btn(style,label,action){
-  const styles={
-    primary:'background:#fff;color:#1a1a1a;border:none;',
-    secondary:'background:rgba(255,255,255,0.12);color:#fff;border:1px solid rgba(255,255,255,0.2);',
-    gold:`background:${CSS.escape?'':''}var(--gold);color:#1a1a1a;border:none;`,
-  };
-  const s=styles[style]||styles.secondary;
-  return `<button class="btn" style="${s}padding:0.38rem 0.85rem;font-size:0.7rem;letter-spacing:0.06em;border-radius:5px;" onclick="${action}">${label}</button>`;
+function abtn(style,label,action){
+  return `<button class="abtn ${style}" onclick="${action}">${label}</button>`;
 }
+
+function btn(style,label,action){ return abtn(style,label,action); }
 
 // ═══════════════════════════════════════════════════
 //  DICE + MOVEMENT
